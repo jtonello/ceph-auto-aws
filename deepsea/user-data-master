@@ -4,9 +4,12 @@
 #
 # Launch script for Salt Master
 
+# Register SLES12SP3 and SES 5
+SUSEConnect -r INTERNAL-USE-ONLY-2cb7bfd421f6627d
+SUSEConnect -r INTERNAL-USE-ONLY-e9a20acbcbe20ee8 -p ses/5/x86_64
+
 # update packages
-# wait for background zyppers to finish
-while sleep 5 ; do
+# wait for background zyppers to finishwhile sleep 5 ; do
     zypper -n update
     if [[ $? = 0 ]] ; then
         break
@@ -34,6 +37,11 @@ server 1.amazon.pool.ntp.org iburst
 server 2.amazon.pool.ntp.org iburst
 server 3.amazon.pool.ntp.org iburst
 EOF
+
+# Remove defunct utilities repo
+zypper -n rr utilities
+
+# Enable NTP
 systemctl enable ntpd.service
 systemctl restart ntpd.service
 
@@ -58,8 +66,6 @@ systemctl enable salt-minion.service
 systemctl start salt-minion.service
 
 # install git
-SUSEConnect -p sle-sdk/12.2/x86_64
-zypper --gpg-auto-import-keys ref
 zypper -n install --no-recommends git
 
 # generate SSH key
@@ -82,11 +88,6 @@ git clone https://github.com/smithfarm/susecon-salt-master salt
 cp /root/.ssh/id_rsa* /srv/salt
 chmod 644 /srv/salt/id_rsa*
 
-# install ttyrec
-zypper ar http://download.opensuse.org/repositories/utilities/SLE-12-SP1 utilities
-zypper --gpg-auto-import-keys ref
-zypper -n install ttyrec
-
 # wait for other instances to initialize
 sleep 30
 
@@ -98,18 +99,30 @@ mkdir -p /srv/pillar/ceph/proposals
 cat <<EOF > /srv/pillar/ceph/proposals/policy.cfg
 # Cluster assignment
 cluster-ceph/cluster/*.sls
-# Hardware Profile
-1Disk20GB-1/cluster/*.sls
-1Disk20GB-1/stack/default/ceph/minions/*yml
-# Common configuration
-config/stack/default/global.yml
-config/stack/default/ceph/cluster.yml
-# Role assignment
+## Roles
+# ADMIN
 role-master/cluster/ip-10-0-0-10*.sls
 role-admin/cluster/ip-10-0-0-10*.sls
-role-admin/cluster/ip-10-0-1-1[123]*.sls
+# MON
 role-mon/cluster/ip-10-0-1-1[123]*.sls
-role-mon/stack/default/ceph/minions/ip-10-0-1-1[123]*.yml
+# MGR (mgrs are usually collocated with mons)
+role-mgr/cluster/ip-10-0-1-1[123]*.sls
+# MDS
+role-mds/cluster/ip-10-0-1-1[123]*.sls
+# IGW
+role-igw/cluster/ip-10-0-1-1[123]*.sls
+# RGW
+role-rgw/cluster/ip-10-0-1-1[123]*.sls
+# NFS
+#role-ganesha/cluster/ip-10-0-0-10*.sls
+# openATTIC
+role-openattic/cluster/ip-10-0-0-10*.sls
+# COMMON
+config/stack/default/global.yml
+config/stack/default/ceph/cluster.yml
+## Profiles
+profile-default/cluster/*.sls
+profile-default/stack/default/ceph/minions/*.yml
 EOF
 
 chown -R salt:salt /srv/*
