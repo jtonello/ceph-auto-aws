@@ -1,28 +1,8 @@
 cluster-definition:
-  - role: admin
+  - role: master
   - role: mon1
   - role: mon2
   - role: mon3
-
-clusters:
-  0:
-    admin:
-      instance_id: i-03b1c5cde184d2b14
-      placement: eu-west-1a
-      volume_id: vol-0679aaeb47dd12828
-  1:vi 
-     mon1:
-      instance_id: i-0f73ca2e65c7c35b4
-      placement: eu-west-1a
-      volume_id: vol-04566d5600b949c06
-    mon2:
-      instance_id: i-0ba7925f2fa972b0f
-      placement: eu-west-1a
-      volume_id: vol-0501a590e914cab0b
-    mon3:
-      instance_id: i-09bcf14be202abb83
-      placement: eu-west-1a
-      volume_id: vol-0b6abe5d0f81a8ec9
 
 delegates: 1
 
@@ -35,7 +15,7 @@ region:
   region_str: eu-west-1
 
 role-definitions:
-  admin:
+  master:
     last-octet: 10
     user-data: deepsea/user-data-master
     volume: 40
