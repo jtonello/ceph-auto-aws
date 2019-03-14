@@ -1,5 +1,5 @@
 cluster-definition:
-  - role: master
+  - role: admin
   - role: mon1
   - role: mon2
   - role: mon3
@@ -15,7 +15,7 @@ region:
   region_str: eu-west-1
 
 role-definitions:
-  master:
+  admin:
     last-octet: 10
     user-data: deepsea/user-data-master
     volume: 40
@@ -27,6 +27,10 @@ role-definitions:
     type: t2.medium
     user-data:
     volume:
+  master:
+    last-octet: 10
+    user-data: deepsea/user-data-master
+    volume: 40
   mon1:
     last-octet: 11
     node-no: 1
