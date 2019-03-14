@@ -1,0 +1,78 @@
+cluster-definition:
+  - role: admin
+  - role: mon1
+  - role: mon2
+  - role: mon3
+
+clusters:
+  0:
+    admin:
+      instance_id: i-03b1c5cde184d2b14
+      placement: eu-west-1a
+      volume_id: vol-0679aaeb47dd12828
+  1:vi 
+     mon1:
+      instance_id: i-0f73ca2e65c7c35b4
+      placement: eu-west-1a
+      volume_id: vol-04566d5600b949c06
+    mon2:
+      instance_id: i-0ba7925f2fa972b0f
+      placement: eu-west-1a
+      volume_id: vol-0501a590e914cab0b
+    mon3:
+      instance_id: i-09bcf14be202abb83
+      placement: eu-west-1a
+      volume_id: vol-0b6abe5d0f81a8ec9
+
+delegates: 1
+
+keyname: jtonello
+
+nametag: jtonello
+
+region:
+  availability_zone:
+  region_str: eu-west-1
+
+role-definitions:
+  admin:
+    last-octet: 10
+    user-data: deepsea/user-data-master
+    volume: 40
+  defaults:
+    ami-id: ami-0d5d9649d94010969
+    last-octet: 128
+    node-no:
+    replace-from-environment: []
+    type: t2.medium
+    user-data:
+    volume:
+  mon1:
+    last-octet: 11
+    node-no: 1
+    user-data: deepsea/user-data-minions
+    volume: 40
+  mon2:
+    last-octet: 12
+    node-no: 2
+    user-data: deepsea/user-data-minions
+    volume: 40
+  mon3:
+    last-octet: 13
+    node-no: 3
+    user-data: deepsea/user-data-minions
+    volume: 40
+  osd:
+    last-octet: 14
+    node-no: 4
+    volume: 40
+
+subnets:
+
+types:
+  - t2.micro
+  - t2.small
+  - t2.medium
+
+vpc:
+
