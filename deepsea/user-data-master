@@ -9,7 +9,8 @@ SUSEConnect -r INTERNAL-USE-ONLY-2cb7bfd421f6627d
 SUSEConnect -r INTERNAL-USE-ONLY-e9a20acbcbe20ee8 -p ses/5/x86_64
 
 # update packages
-# wait for background zyppers to finishwhile sleep 5 ; do
+# wait for background zyppers to finish
+while sleep 5 ; do
     zypper -n update
     if [[ $? = 0 ]] ; then
         break
