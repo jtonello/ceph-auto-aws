@@ -5,8 +5,8 @@
 # Launch script for Salt Master
 
 # Register SLES12SP3 and SES 5
-SUSEConnect -r INTERNAL-USE-ONLY-2cb7bfd421f6627d
-SUSEConnect -r INTERNAL-USE-ONLY-e9a20acbcbe20ee8 -p ses/5/x86_64
+SUSEConnect -r INTERNAL-XXX-XXXX-2cb7bfd421f6627d
+SUSEConnect -r INTERNAL-XXX-XXXX-e9a20acbcbe20ee8 -p ses/5/x86_64
 
 # update packages
 # wait for background zyppers to finish
